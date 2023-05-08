@@ -1,5 +1,6 @@
 'client only';
 
+import { RATINGS_COLOR } from '@/constants';
 import {
     averageReviews,
     checkIfOpen,
@@ -56,7 +57,7 @@ export default function DiscoverPub({ pub }: DiscoverPubProps) {
                         ).toFixed(1)}
                     </div>
                     <div className="ml-0.5 mr-1">
-                        <IoStar color="#FFD700" />
+                        <IoStar color={RATINGS_COLOR} />
                     </div>
                     <div>({pub.num_reviews})</div>
                 </div>

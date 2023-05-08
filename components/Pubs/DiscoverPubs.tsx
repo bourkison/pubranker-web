@@ -6,6 +6,7 @@ import { DEFAULT_USER_LOCATION_COORDINATES } from '@/constants';
 import { TPub } from '@/types';
 import DiscoverPub from '@/components/Pubs/DiscoverPub';
 import Spinner from '@/components/Utility/Spinner';
+import Link from 'next/link';
 
 export default function DiscoverPubs() {
     const [isLoading, setIsLoading] = useState(true);
@@ -50,7 +51,9 @@ export default function DiscoverPubs() {
     return (
         <div className="overflow-y-scroll max-h-screen">
             {pubs.map(pub => (
-                <DiscoverPub pub={pub} key={pub.id} />
+                <Link key={pub.id} href={`/pubs/${pub.id}`}>
+                    <DiscoverPub pub={pub} />
+                </Link>
             ))}
         </div>
     );

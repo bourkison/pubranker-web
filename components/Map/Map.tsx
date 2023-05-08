@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import styles from './Map.module.css';
 
 import { useJsApiLoader, GoogleMap } from '@react-google-maps/api';
+import { DEFAULT_USER_LOCATION_COORDINATES } from '@/constants';
 
 export default function Map() {
     // const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? '';
@@ -17,7 +18,7 @@ export default function Map() {
     });
 
     const onLoad = useCallback((map: google.maps.Map) => {
-        const center = { lat: 51.553064, lng: -0.056349 };
+        const center = DEFAULT_USER_LOCATION_COORDINATES;
         const bounds = new window.google.maps.LatLngBounds(center);
         map.fitBounds(bounds);
 
@@ -36,7 +37,7 @@ export default function Map() {
 
     return (
         <div className={styles.map + ' bg-red-600'}>
-            {/* <GoogleMap
+            <GoogleMap
                 options={{
                     clickableIcons: false,
                     disableDefaultUI: true,
@@ -44,7 +45,7 @@ export default function Map() {
                     mapId: googleMapsApiID,
                 }}
                 mapContainerClassName={styles.map}
-                onLoad={onLoad}></GoogleMap> */}
+                onLoad={onLoad}></GoogleMap>
         </div>
     );
 }
