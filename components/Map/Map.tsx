@@ -20,7 +20,7 @@ export default function Map() {
                 container: mapContainer.current,
                 style: 'mapbox://styles/mapbox/light-v10',
                 center: [-0.056349, 51.553064],
-                zoom: 8,
+                zoom: 15,
             }),
         );
     }, []);
