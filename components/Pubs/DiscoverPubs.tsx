@@ -5,6 +5,7 @@ import { getCurrentLocation } from '@/services';
 import { DEFAULT_USER_LOCATION_COORDINATES } from '@/constants';
 import { TPub } from '@/types';
 import DiscoverPub from '@/components/Pubs/DiscoverPub';
+import Spinner from '@/components/Utility/Spinner';
 
 export default function DiscoverPubs() {
     const [isLoading, setIsLoading] = useState(true);
@@ -39,11 +40,15 @@ export default function DiscoverPubs() {
     }, []);
 
     if (isLoading) {
-        return <div>Loading..</div>;
+        return (
+            <div className="flex justify-center mt-5">
+                <Spinner />
+            </div>
+        );
     }
 
     return (
-        <div className="overflow-y-scroll">
+        <div className="overflow-y-scroll max-h-screen">
             {pubs.map(pub => (
                 <DiscoverPub pub={pub} key={pub.id} />
             ))}

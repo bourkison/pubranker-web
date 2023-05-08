@@ -17,3 +17,18 @@ export const getCurrentLocation = () => {
         }
     });
 };
+
+export const averageReviews = (
+    beer: number,
+    food: number,
+    location: number,
+    music: number,
+    service: number,
+    vibe: number,
+) => {
+    return (beer + food + location + music + service + vibe) / 6;
+};
+
+export const roundToNearest = (input: number, nearest: number): number => {
+    return Math.ceil(input / nearest) * nearest;
+};

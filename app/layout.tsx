@@ -15,7 +15,7 @@ export default function RootLayout({
         <html lang="en">
             <body>
                 <div className="flex align-middle flex-row">
-                    <div>{children}</div>
+                    <div className="shadow-lg h-screen">{children}</div>
                     <Map />
                 </div>
             </body>
