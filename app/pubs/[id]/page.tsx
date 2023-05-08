@@ -1,7 +1,4 @@
-import { useRouter } from 'next/router';
-import { GetStaticProps, GetStaticPaths } from 'next';
 import { supabase } from '@/services/supabase';
-import { TPub } from '@/types';
 
 type PubViewProps = {
     params: {
@@ -9,46 +6,19 @@ type PubViewProps = {
     };
 };
 
-// async function getData() {
+export default async function PubView({ params }: PubViewProps) {
+    const { data, error } = await supabase
+        .rpc('get_pub', {
+            dist_lat: 0,
+            dist_long: 0,
+        })
+        .eq('id', params.id)
+        .limit(1)
+        .single();
 
-// }
+    if (error) {
+        return <div>{JSON.stringify(error)}</div>;
+    }
 
-export default function PubView({ params }: PubViewProps) {
-    return <div>{params.id}</div>;
+    return <div>{data.name}</div>;
 }
-
-// export async function generateStaticParams() {
-//     const { data, error } = await supabase.rpc('get_pub', {
-//         dist_lat: 0,
-//         dist_long: 0,
-//     });
-
-//     if (error) {
-//         throw error;
-//     }
-
-//     return {
-
-//     }
-// }
-
-export async function getStaticProps() {}
-
-// export async function getStaticPaths() {
-//     return {
-//         paths: {
-//             [{
-
-//             }]
-//         }
-//     }
-// }
-
-// export async function getServerSideProps() {
-
-//     return {
-//         props: {
-//             pub: data,
-//         },
-//     };
-// }
