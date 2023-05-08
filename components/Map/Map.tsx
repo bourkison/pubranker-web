@@ -35,8 +35,8 @@ export default function Map() {
     }
 
     return (
-        <div className={styles.map}>
-            <GoogleMap
+        <div className={styles.map + ' bg-red-600'}>
+            {/* <GoogleMap
                 options={{
                     clickableIcons: false,
                     disableDefaultUI: true,
@@ -44,7 +44,7 @@ export default function Map() {
                     mapId: googleMapsApiID,
                 }}
                 mapContainerClassName={styles.map}
-                onLoad={onLoad}></GoogleMap>
+                onLoad={onLoad}></GoogleMap> */}
         </div>
     );
 }

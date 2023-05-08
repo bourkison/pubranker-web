@@ -1,10 +1,9 @@
-import Link from 'next/link';
+import DiscoverPubs from '@/components/Pubs/DiscoverPubs';
 
 export default function Home() {
     return (
         <div className="w-52">
-            <div>test</div>
-            <Link href="/testroute">Link</Link>
+            <DiscoverPubs />
         </div>
     );
 }
