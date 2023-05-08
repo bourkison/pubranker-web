@@ -1,29 +1,50 @@
 'use client';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import styles from './Map.module.css';
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN ?? '';
+import { useJsApiLoader, GoogleMap } from '@react-google-maps/api';
 
 export default function Map() {
-    const mapContainer = useRef<HTMLDivElement>(null);
-    const [map, setMap] = useState<mapboxgl.Map>();
+    // const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? '';
+    const googleMapsApiKey = '';
 
-    useEffect(() => {
-        if (!mapContainer || !mapContainer.current) {
-            return;
-        }
+    // const googleMapsApiID = process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID ?? '';
+    const googleMapsApiID = '';
 
-        setMap(
-            new mapboxgl.Map({
-                container: mapContainer.current,
-                style: 'mapbox://styles/mapbox/light-v10',
-                center: [-0.056349, 51.553064],
-                zoom: 15,
-            }),
-        );
+    const { isLoaded } = useJsApiLoader({
+        googleMapsApiKey: googleMapsApiKey,
+        id: 'google-map-script',
+    });
+
+    const onLoad = useCallback((map: google.maps.Map) => {
+        const center = { lat: 51.553064, lng: -0.056349 };
+        const bounds = new window.google.maps.LatLngBounds(center);
+        map.fitBounds(bounds);
+
+        // setMap(map);
     }, []);
 
-    return <div className={styles.map} ref={mapContainer}></div>;
+    const onUnmount = useCallback(() => {
+        return () => {
+            // setMap(null);
+        };
+    }, []);
+
+    if (!isLoaded) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <div className={styles.map}>
+            <GoogleMap
+                options={{
+                    clickableIcons: false,
+                    disableDefaultUI: true,
+                    gestureHandling: 'greedy',
+                    mapId: googleMapsApiID,
+                }}
+                mapContainerClassName={styles.map}
+                onLoad={onLoad}></GoogleMap>
+        </div>
+    );
 }
