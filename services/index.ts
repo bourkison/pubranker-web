@@ -1,24 +1,40 @@
 import { Database } from '@/types/schema';
 import dayjs from 'dayjs';
 
+let currentLocationPromise: Promise<{ lat: number; lng: number }> | null = null;
 export const getCurrentLocation = () => {
-    return new Promise<{ lat: number; lng: number }>((resolve, reject) => {
-        if ('geolocation' in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                ({ coords }) => {
-                    resolve({ lat: coords.latitude, lng: coords.longitude });
-                    return;
-                },
-                () => {
+    if (!currentLocationPromise) {
+        currentLocationPromise = new Promise<{ lat: number; lng: number }>(
+            (resolve, reject) => {
+                if ('geolocation' in navigator) {
+                    navigator.geolocation.getCurrentPosition(
+                        ({ coords }) => {
+                            resolve({
+                                lat: coords.latitude,
+                                lng: coords.longitude,
+                            });
+                            currentLocationPromise = null;
+                            return;
+                        },
+                        () => {
+                            reject();
+                            currentLocationPromise = null;
+                            return;
+                        },
+                        {
+                            timeout: 10_000,
+                        },
+                    );
+                } else {
                     reject();
+                    currentLocationPromise = null;
                     return;
-                },
-            );
-        } else {
-            reject();
-            return;
-        }
-    });
+                }
+            },
+        );
+    }
+
+    return currentLocationPromise;
 };
 
 export const averageReviews = (

@@ -24,9 +24,13 @@ export default function DiscoverPubs() {
             let location = userLocation;
 
             if (!location) {
+                console.log('fetching location');
+
                 location = await getCurrentLocation().catch(
                     () => DEFAULT_USER_LOCATION_COORDINATES,
                 );
+
+                console.log('location fetched');
 
                 dispatch(setLocation(location));
             }
@@ -42,6 +46,7 @@ export default function DiscoverPubs() {
 
             if (error) {
                 console.error(error);
+                setIsLoading(false);
                 return;
             }
 
