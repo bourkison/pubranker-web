@@ -1,5 +1,6 @@
 import Map from '@/components/Map/Map';
 import './globals.css';
+import AppProvider from './provider';
 
 export const metadata = {
     title: 'Pub Ranker',
@@ -14,10 +15,14 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <div className="flex align-middle flex-row ">
-                    <div className="shadow-lg h-screen w-96">{children}</div>
-                    <Map />
-                </div>
+                <AppProvider>
+                    <div className="flex align-middle flex-row ">
+                        <div className="shadow-lg h-screen w-96">
+                            {children}
+                        </div>
+                        <Map />
+                    </div>
+                </AppProvider>
             </body>
         </html>
     );

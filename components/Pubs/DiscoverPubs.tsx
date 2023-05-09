@@ -7,17 +7,29 @@ import { TPub } from '@/types';
 import DiscoverPub from '@/components/Pubs/DiscoverPub';
 import Spinner from '@/components/Utility/Spinner';
 import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setLocation } from '@/store/slices/pub';
 
 export default function DiscoverPubs() {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [pubs, setPubs] = useState<TPub[]>([]);
+
+    const userLocation = useAppSelector(state => state.pub.userLocation);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const fetchPubs = async () => {
             setIsLoading(true);
-            let location = await getCurrentLocation().catch(
-                () => DEFAULT_USER_LOCATION_COORDINATES,
-            );
+
+            let location = userLocation;
+
+            if (!location) {
+                location = await getCurrentLocation().catch(
+                    () => DEFAULT_USER_LOCATION_COORDINATES,
+                );
+
+                dispatch(setLocation(location));
+            }
 
             const { data, error } = await supabase
                 .rpc('nearby_pubs', {
@@ -37,8 +49,10 @@ export default function DiscoverPubs() {
             setIsLoading(false);
         };
 
-        fetchPubs();
-    }, []);
+        if (!pubs.length && !isLoading) {
+            fetchPubs();
+        }
+    }, [dispatch, userLocation, pubs, isLoading]);
 
     if (isLoading) {
         return (

@@ -6,19 +6,25 @@ type PubViewProps = {
     };
 };
 
-export default async function PubView({ params }: PubViewProps) {
+async function getPub(pubId: number) {
     const { data, error } = await supabase
         .rpc('get_pub', {
             dist_lat: 0,
             dist_long: 0,
         })
-        .eq('id', params.id)
+        .eq('id', pubId)
         .limit(1)
         .single();
 
     if (error) {
-        return <div>{JSON.stringify(error)}</div>;
+        throw new Error(error.message);
     }
+
+    return data;
+}
+
+export default async function PubView({ params }: PubViewProps) {
+    const data = await getPub(parseInt(params.id));
 
     return <div>{data.name}</div>;
 }
