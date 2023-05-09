@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setSearchText } from '@/store/slices/pub';
+import { searchPubs, setSearchText } from '@/store/slices/pub';
 import { ChangeEvent, FormEvent, useCallback } from 'react';
 
 export default function SearchBar() {
@@ -18,10 +18,9 @@ export default function SearchBar() {
     const search = useCallback(
         (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-
-            console.log(searchText);
+            dispatch(searchPubs());
         },
-        [searchText],
+        [dispatch],
     );
 
     return (

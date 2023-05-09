@@ -2,7 +2,7 @@ import { Database } from '@/types/schema';
 import dayjs from 'dayjs';
 
 let currentLocationPromise: Promise<{ lat: number; lng: number }> | null = null;
-export const getCurrentLocation = () => {
+export const getCurrentLocation = (): Promise<{ lat: number; lng: number }> => {
     if (!currentLocationPromise) {
         currentLocationPromise = new Promise<{ lat: number; lng: number }>(
             (resolve, reject) => {

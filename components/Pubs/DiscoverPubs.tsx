@@ -1,63 +1,20 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { supabase } from '@/services/supabase';
-import { getCurrentLocation } from '@/services';
-import { DEFAULT_USER_LOCATION_COORDINATES } from '@/constants';
-import { TPub } from '@/types';
+import { useEffect } from 'react';
 import DiscoverPub from '@/components/Pubs/DiscoverPub';
 import Spinner from '@/components/Utility/Spinner';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setLocation } from '@/store/slices/pub';
+import { searchPubs } from '@/store/slices/pub';
 
 export default function DiscoverPubs() {
-    const [isLoading, setIsLoading] = useState(false);
-    const [pubs, setPubs] = useState<TPub[]>([]);
+    const isLoading = useAppSelector(state => state.pub.isLoading);
+    const pubs = useAppSelector(state => state.pub.pubs);
 
-    const userLocation = useAppSelector(state => state.pub.userLocation);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        const fetchPubs = async () => {
-            setIsLoading(true);
-
-            let location = userLocation;
-
-            if (!location) {
-                console.log('fetching location');
-
-                location = await getCurrentLocation().catch(
-                    () => DEFAULT_USER_LOCATION_COORDINATES,
-                );
-
-                console.log('location fetched');
-
-                dispatch(setLocation(location));
-            }
-
-            const { data, error } = await supabase
-                .rpc('nearby_pubs', {
-                    dist_lat: location.lat,
-                    dist_long: location.lng,
-                    order_long: location.lng,
-                    order_lat: location.lat,
-                })
-                .limit(10);
-
-            if (error) {
-                console.error(error);
-                setIsLoading(false);
-                return;
-            }
-
-            setPubs(data);
-            setIsLoading(false);
-        };
-
-        if (!pubs.length && !isLoading) {
-            fetchPubs();
-        }
-    }, [dispatch, userLocation, pubs, isLoading]);
+        dispatch(searchPubs());
+    }, [dispatch]);
 
     if (isLoading) {
         return (

@@ -37,7 +37,7 @@ export default function DiscoverPub({ pub }: DiscoverPubProps) {
     }, [pub]);
 
     return (
-        <div className="px-5 py-10 flex flex-row justify-between items-center  border-b-neutral-200 border-b hover:bg-neutral-100 hover:cursor-pointer">
+        <div className="px-5 py-6 flex flex-row justify-between items-center  border-b-neutral-200 border-b hover:bg-neutral-100 hover:cursor-pointer">
             <div className="pr-2">
                 <div>
                     <h4 className="font-medium">{pub.name}</h4>
