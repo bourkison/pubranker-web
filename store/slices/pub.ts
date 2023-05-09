@@ -11,6 +11,9 @@ const pubAdapter = createEntityAdapter();
 
 const initialState = pubAdapter.getInitialState({
     userLocation: null as typeof DEFAULT_USER_LOCATION_COORDINATES | null,
+    filters: {
+        searchText: '',
+    },
 });
 
 const pubSlice = createSlice({
@@ -23,8 +26,11 @@ const pubSlice = createSlice({
         ) {
             state.userLocation = action.payload;
         },
+        setSearchText(state, action: PayloadAction<string>) {
+            state.filters.searchText = action.payload;
+        },
     },
 });
 
-export const { setLocation } = pubSlice.actions;
+export const { setLocation, setSearchText } = pubSlice.actions;
 export default pubSlice.reducer;

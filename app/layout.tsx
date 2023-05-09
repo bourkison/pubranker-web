@@ -1,6 +1,6 @@
-import Map from '@/components/Map/Map';
 import './globals.css';
 import AppProvider from './provider';
+import MapContainer from '@/components/Map/MapContainer';
 
 export const metadata = {
     title: 'Pub Ranker',
@@ -20,7 +20,7 @@ export default function RootLayout({
                         <div className="shadow-lg h-screen w-96">
                             {children}
                         </div>
-                        <Map />
+                        <MapContainer />
                     </div>
                 </AppProvider>
             </body>
